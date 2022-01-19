@@ -7,6 +7,7 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -28,6 +29,7 @@ export class UserController {
   }
 
   // 유저 수정
+  @UseGuards(JwtAuthGuard)
   @Patch()
   update(@Body() data: UpdateUserDto) {
     return this.userService.update(data);

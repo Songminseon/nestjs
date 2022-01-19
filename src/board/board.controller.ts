@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Put, Patch, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
@@ -26,6 +27,7 @@ export class BoardController {
   }
 
   // 게시글 업데이트
+  @UseGuards(JwtAuthGuard)
   @Put()
   update(@Body() data: UpdateBoardDto) {
     return this.boardService.update(data);
