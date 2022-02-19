@@ -1,6 +1,9 @@
 {
   "name": "back-practice",
   "version": "0.0.1",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "description": "",
   "author": "",
   "private": true,
@@ -9,16 +12,18 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
+    "start": "dotenv -e .env.dev nest start",
+    "start:dev": "dotenv -e .env.dev nest start --watch",
+    "start:debug": "dotenv -e .env.dev nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test": "dotenv -e .env.test npx prisma migrate reset -Y && dotenv -e .env.test npx prisma db push && dotenv -e .env.test cross-env NODE_ENV=test npx prisma db seed && dotenv -e .env.test jest",
+    "test:watch": "dotenv -e .env.test jest --watch",
+    "test:cov": "dotenv -e .env.test jest --coverage",
+    "test:debug": "dotenv -e .env.test node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "dotenv -e .env.test jest --config ./test/jest-e2e.json",
+    "db:dev": "dotenv -e .env.dev npx prisma db push",
+    "db:test": "dotenv -e .env.test npx prisma db push"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -31,6 +36,7 @@
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "cross-env": "^7.0.3",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
@@ -55,6 +61,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.2.5",
+    "jest-mock-extended": "^2.0.4",
     "prettier": "^2.3.2",
     "prisma": "^3.7.0",
     "source-map-support": "^0.5.20",
@@ -80,6 +87,9 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1"
+    }
   }
 }

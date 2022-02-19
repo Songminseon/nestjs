@@ -20,6 +20,7 @@ export class AuthService {
       const { password, ...result } = user;
 
       const passwordValid = await bcrypt.compare(inputPassword, password);
+      console.log(inputPassword, password, 'check password');
       if (!passwordValid) {
         throw new UnauthorizedException();
       }
@@ -29,9 +30,9 @@ export class AuthService {
   }
 
   async login(user: any) {
-    console.log('login succes')
     const payload = { username: user.username, sub: user.userId };
     return {
+      success: true,
       user: user,
       access_token: this.jwtService.sign(payload),
     };
@@ -39,11 +40,7 @@ export class AuthService {
 
   async test() {
     return {
-      test: "success"
-    }
-  }
-
-  async logout() {
-    return true;
+      test: 'success',
+    };
   }
 }

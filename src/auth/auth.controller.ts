@@ -18,9 +18,4 @@ export class AuthController {
   async test() {
     return this.authService.test();
   }
-
-  @Get('logout')
-  async logout() {
-    return this.authService.logout();
-  }
 }

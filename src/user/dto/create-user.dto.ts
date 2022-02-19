@@ -4,7 +4,7 @@ import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 // runtime validation
 export class CreateUserDto {
   @IsEmail()
-  @MinLength(2)
+  @MinLength(10)
   @MaxLength(100)
   email: string;
 
